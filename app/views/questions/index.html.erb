@@ -1,9 +1,46 @@
-<h1>Questions Home Page</h1>
+<html>
+<head>
+</head>
 
-<% @questions.each do |question| %>
-	<div class="well">
-		<h3><%= question.qtext %></h3>
-		<p><%= question.description %></p>
-		<%= link_to "View Question", question_path(question), :class => 'btn btn-default' %>
+<body>
+<% @auth = session[:omniauth] if session[:omniauth] %>
+
+<% if current_user or @auth %>
+	<% current_time = DateTime.now %>
+	<% @questions.each do |question| %>
+		<div class="well">
+
+			<h3><%= link_to question.qtext,question_path(question) %></h3>
+			<% if question.answers.first %>
+			<% question_time = question.answers.order("created_at").last.created_at	 %>
+			<h5><%= image_tag('normal.png', width: '50', height: '50', class: 'image-circle')%>
+				<%= question.answers.order("created_at").last.name %>
+			</h5>
+			<h6>Answered <%= distance_of_time_in_words(current_time, question_time)  %>  ago</h6>
+
+
+		<div>
+			<% if question.answers.order("created_at").last.body.length > 200 %>
+	 			<%= truncate(question.answers.order("created_at").last.body, length: 200) %>
+	 			<%= link_to '...Read more', '', class: "read-more-#{question.id}" %>
+	 			<script>
+		 			$('.read-more-<%= question.id %>').on('click', function(e) {
+			 		e.preventDefault()
+			 		$(this).parent().html('<%= escape_javascript question.answers.order("created_at").last.body %>')
+		 			})
+	 			</script>
+ 			<% else %>
+	 			<%= question.answers.order("created_at").last.body %>
+		<% end %>
 	</div>
+ <% end %>
+
+
+		</div>
+		<% end  %>
+<% else %>
+	<h1 style="text-align:center"> Q/A App </h1>
+	<h2 style="text-align:center"> A place to share knowledge </h2>
+
 <% end %>
+</body>

@@ -1,17 +1,31 @@
+<% @auth = session[:omniauth] if session[:omniauth] %>
+
 <h2><%= @question.qtext %></h2>
+
 
 <p><%= @question.description %></p>
 <hr>
+<% if current_user %>
+	<% if @question.user_id == current_user.id%>
+		<%= link_to "Edit", edit_question_path(@question), :class => 'btn btn-default' %>
 
-<%= link_to "Edit", edit_question_path(@question), :class => 'btn btn-default' %>
+		<%= link_to "Delete", question_path(@question),
+							method: :delete,
+							data: {confirm: 'Are you sure?'},
 
-<%= link_to "Delete", question_path(@question),
-					method: :delete,
-					data: {confirm: 'Are you sure?'},
-						
-					:class => 'btn btn-danger' %>
+							:class => 'btn btn-danger' %>
+	<% end %>
+<% elsif session[:omniauth]%>
+	<% if @question.name == session[:omniauth]['info']['name'] %>
+		<%= link_to "Edit", edit_question_path(@question), :class => 'btn btn-default' %>
 
+		<%= link_to "Delete", question_path(@question),
+							method: :delete,
+							data: {confirm: 'Are you sure?'},
 
+							:class => 'btn btn-danger' %>
+	<% end %>
+<% end %>
 <hr>
 <%= render 'answers/answers' %>
 <hr>

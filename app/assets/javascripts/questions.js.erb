@@ -1,0 +1,18 @@
+
+$(document).ready(function(){
+  var readmore = $(".answer").html();
+  var lesstext = readmore.substr(0,100);
+  if(readmore.length > 100){
+    $('.answer').html(lesstext).append("<a href='' class='read-more'>...Show more</a>");
+  }else{
+    $('.answer').html(readmore);
+  }
+  $("body").on("click",".read-more",function(e){
+    e.preventDefault();
+    $(this).parent('.answer').html(readmore).append("<a href='' class='show-less'>...Show less</a>")
+  });
+  $("body").on("click",".show-less",function(e){
+    e.preventDefault();
+    $(this).parent('.answer').html(readmore.substr(0,100)).append("<a href='' class='read-more'>...Show more</a>")
+  });
+});

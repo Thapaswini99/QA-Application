@@ -14,7 +14,11 @@ class QuestionsController < ApplicationController
 
 	def create
 		#render plain: params[:post].inspect
-		@question = Question.new(question_params)
+		if(current_user)
+			@question = Question.new(question_params.merge(user_id: current_user.id, name: current_user.name))
+		else
+			@question = Question.new(question_params.merge(user_id: 1, name: session[:omniauth]['info']['name']))
+		end
 		if(@question.save)
 			redirect_to @question
 		else

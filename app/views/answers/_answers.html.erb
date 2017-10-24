@@ -1,13 +1,25 @@
 <h3>Answers</h3>
-
+<% current_time = DateTime.now %>
 <% @question.answers.each do |answer| %>
+	<% question_time = answer.created_at %>
 	<div class="well">
-		<p><strong>Username</strong>: <%= answer.body %>
-
-	<%= link_to "[X]", [answer.question, answer],
+		<li><h4><%= image_tag('normal.png', width: '50', height: '50', class: 'image-circle')%> <%= answer.name%></h4>
+		<h6>Answered <%= distance_of_time_in_words(current_time, question_time)  %>  ago</h6></li>
+		<br/>
+	 <%= answer.body %>
+	<% if current_user %>
+	 <% if answer.user_id == current_user.id %>
+		<%= link_to "[X]", [answer.question, answer],
 					method: :delete,
 					data: {confirm: 'Are you sure?'} %>
-
+		<% end %>
+	<% elsif session[:omniauth] %>
+		<% if answer.name ==  session[:omniauth]['info']['name']%>
+			<%= link_to "[X]", [answer.question, answer],
+				method: :delete,
+				data: {confirm: 'Are you sure?'} %>
+		<% end %>
+	<% end %>
 		</p>
 	</div>
 <% end %>
