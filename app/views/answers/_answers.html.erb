@@ -1,12 +1,25 @@
 <h3>Answers</h3>
 <% current_time = DateTime.now %>
-<% @question.answers.each do |answer| %>
+<% @question.answers.all.order("created_at DESC").each do |answer| %>
 	<% question_time = answer.created_at %>
 	<div class="well">
 		<li><h4><%= image_tag('normal.png', width: '50', height: '50', class: 'image-circle')%> <%= answer.name%></h4>
 		<h6>Answered <%= distance_of_time_in_words(current_time, question_time)  %>  ago</h6></li>
 		<br/>
-	 <%= answer.body %>
+	 <div>Ans:
+		 <% if answer.body.length > 200 %>
+			 <%= truncate(answer.body, length: 200) %>
+			 <%= link_to '...Read more', '', class: "read-more-#{@question.id}-#{answer.id}" %>
+			 <script>
+				 $('.read-more-<%= question.id %>-<%= answer.id %>').on('click', function(e) {
+				 e.preventDefault()
+				 $(this).parent().html('<%= escape_javascript question.answers.order("created_at").last.body %>')
+				 })
+			 </script>
+		 <% else %>
+			 <%= answer.body %>
+	 <% end %>
+ </div>
 	<% if current_user %>
 	 <% if answer.user_id == current_user.id %>
 		<%= link_to "[X]", [answer.question, answer],
