@@ -1,11 +1,11 @@
 class QuestionsController < ApplicationController
-	
+
 	def new
   		@question = Question.new()
 	end
 
 	def index
-		@questions = Question.all
+		@questions = Question.all.order("created_at DESC").paginate(page: params[:page], per_page: 7)
 	end
 
 	def show
