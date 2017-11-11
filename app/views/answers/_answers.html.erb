@@ -22,9 +22,10 @@
  </div>
 	<% if current_user %>
 	 <% if answer.user_id == current_user.id %>
-		<%= link_to "[X]", [answer.question, answer],
+		<%= link_to  [answer.question, answer],
 					method: :delete,
-					data: {confirm: 'Are you sure?'} %>
+					data: {confirm: 'Are you sure?'} do %><%= image_tag('bin.png', width: '40', height: '40', class: 'image-circle')%><%end%>
+
 		<% end %>
 	<% elsif session[:omniauth] %>
 		<% if answer.name ==  session[:omniauth]['info']['name']%>
