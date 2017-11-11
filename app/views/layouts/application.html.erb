@@ -39,11 +39,11 @@
 
           <ul class="nav navbar-nav">
             <% if current_user or @auth%>
-              <li><h1><%= link_to "Home",root_url %> </h1></li>
+              <li><h1><%= link_to root_url do %><%= image_tag('home.png', width: '60', height: '60', class: 'image-circle')%><%end%> </h1></li>
             <% else %>
                 <li><%= link_to "REGISTER",  new_user_registration_path  %></li>
                 <li><%= link_to "LOGIN", new_user_session_path  %></li>
-                <li><%= link_to user_twitter_omniauth_authorize_path do %><%= image_tag('twitter.png', width: '40', height: '40', class: 'image-circle')%><%end%>
+                <li>
 </li>
             <% end %>
           </ul>
@@ -52,8 +52,9 @@
             <% if current_user %>
               <li>   </li>
               <li>
+                <br>
                 <%= image_tag('normal.png', width: '50', height: '50', class: 'image-circle')%></li>
-            <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+            <li><br><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
 
               </li>
             <% elsif @auth %>
@@ -61,7 +62,7 @@
                 <%= image_tag(@auth['info']['image'], width: '50', height: '50', class: 'image-circle')%></li>
                 <li><%= link_to "Logout", {:controller => "sessions", :action => "destroy"} %>
               </li>
-              
+
             <% end  %>
           </div>
       </div>
@@ -78,8 +79,10 @@
             <ul class="nav nav-list">
               <% if current_user or @auth%>
                   <li><%= link_to "Ask a question", new_question_path %></li>
+                  <br>
+                  <li><%= image_tag("serc.jpg", width: '200', height: '200', class: 'image-circle')%></li>
               <% else %>
-                  <%= image_tag("bg.png", width: '200', height: '200', class: 'image-circle')%></li>
+                  <li><%= image_tag("bg.png", width: '200', height: '200', class: 'image-circle')%></li>
               <% end %>
 
             </ul>
